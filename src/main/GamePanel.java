@@ -64,75 +64,68 @@ public class GamePanel extends JPanel implements Runnable{
     public final int gameOverState = 2;
 	
 	public GamePanel() {
-		
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.black);
 		this.addKeyListener(keyH);
-		this.setFocusable(true);
-		
-	}
+		this.setFocusable(true);	
+	} // End of constructor
+	
 	public void startThread() {
 		if( animation == null) {
     		animation = new Thread(this);
             animation.start();
     	}
-	}
+	} // End of startThread
 
 	@Override
 	public void run() {
-		
+		// Standard Java Animation Framework
 		long beforeTime, afterTime, timeDiff, sleepTime;
 		long overSleepTime = 0L;
 		int noDelays = 0;
 		long excess = 0L;
-		
 		beforeTime = System.nanoTime();
-		
 		running = true;
+		
 		while(animation != null && running == true) {
-			update();
-			gameRender();
-			paintScreen();
+			update(); // Update
+			gameRender(); // Render
+			paintScreen(); // Draw
 			
 			afterTime = System.nanoTime();
 			timeDiff = afterTime - beforeTime;
 			sleepTime = (period - timeDiff) - overSleepTime;
 			
-			if (sleepTime > 0) {   // some time left in this cycle
+			if (sleepTime > 0) {  
 				try {
 					Thread.sleep(sleepTime/1000000L);  // nano -> ms
 				}
 				catch(InterruptedException ex){}
-				overSleepTime =
-					(System.nanoTime() - afterTime) - sleepTime;
-			}
-			else {    // sleepTime <= 0; frame took longer than the period
-				excess -= sleepTime;  // store excess time value
+				
+				overSleepTime = (System.nanoTime() - afterTime) - sleepTime;
+			} 
+			else { 
+				excess -= sleepTime;
 				overSleepTime = 0L;
-
 				if (++noDelays >= NO_DELAYS_PER_YIELD) {
-					Thread.yield( );   // give another thread a chance to run
+					Thread.yield( );
 					noDelays = 0;
 				}
 			}
 
 			beforeTime = System.nanoTime();
-			/* If frame animation is taking too long, update the game state
-	           without rendering it, to get the updates/sec nearer to
-	           the required FPS. */
 			int skips = 0;
 			while((excess > period) && (skips < MAX_FRAME_SKIPS)) {
 				excess -= period;
 				update( );      // update state but don't render
 				skips++;
 			}
-		}
+		} // End of while
 
 		System.exit(0);
-		
 	}
+	
 	public void update() {
-		
 		if(gameState == playState) {
 			Random random = new Random();
 			int ranNum = random.nextInt(4)+1; // picks a random number from 1 - 100
@@ -151,11 +144,11 @@ public class GamePanel extends JPanel implements Runnable{
 			for(int i = 0; i < obj.length; i++) {
 				if(obj[i] != null) {
 					obj[i].update();
+					// If obj goes out of bounds delete if and generate a new obj
 					if(obj[i].y < 0 || obj[i].y > 5 * tileSize) {
 						if(obj[i].y > tileSize * 4) {
 							missCounter++;
-							playSE(1);
-							
+							playSE(1);	
 						}
 						obj[i] = null;
 						if(missCounter >= 3) {
@@ -167,16 +160,12 @@ public class GamePanel extends JPanel implements Runnable{
 						else {
 							setupGame(ranNum);
 						}
-					}
-				
-				}
-				
-			}
-		
-		}
-		
-		
-	}
+					} // End of if
+				} // End of if
+			} // End of for
+		} // End of if
+	} // End of update
+	
 	private void gameRender() {
 		if(dbImage == null) {
 			dbImage = createImage(screenWidth, screenHeight);
@@ -190,41 +179,36 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 		g2.setColor(Color.black);
 		g2.fillRect(0,  0,  screenWidth, screenHeight);
-		 
-		// Draw Characters
 		// TITLE SCREEN
 		if(gameState == titleState) {
 			ui.draw(g2);
 		} 
+		// Play Screen
 		else {
 			// UI and background
 		    ui.draw(g2);
 		    
 			for(int i = 0; i < obj.length; i++) {
-		        	if(obj[i] != null) {
-		        		entityList.add(obj[i]);
-		        	}
+		        if(obj[i] != null) {
+		        	entityList.add(obj[i]);
+		        }
 		     }
 			 Collections.sort(entityList, new Comparator<Entity>(){
-	
-					@Override
-					public int compare(Entity e1, Entity e2) {
-						
-						int results = Integer.compare(e1.y, e2.y);
-						return results;
-					}	
-		        	
-		     });
+		 	 	@Override
+				public int compare(Entity e1, Entity e2) {
+					int results = Integer.compare(e1.y, e2.y);
+					return results;
+				}});
+			
 			// DRAW ENTITIES
 		    for(int i = 0; i < entityList.size(); i++) {
 		    	entityList.get(i).draw(g2);
 		    }
 		    player.draw(g2);
 		    // EMPTY ENTITIES LIST
-		    entityList.clear();
-		    
+		    entityList.clear(); 
 		}
-	}
+	} //End of gameRender
 	
 	public void paintScreen() {
 		Graphics2D g;
@@ -241,26 +225,22 @@ public class GamePanel extends JPanel implements Runnable{
 	} // End of painScreen
 	
 	public void setupGame(int xMultiplier) {
-		
 		obj[0] = new OBJ_Shield_Wood(this);
 		obj[0].x = xMultiplier * tileSize + (tileSize/2);
 		obj[0].y = tileSize * 0;
-		
+	} // setupGame
 	
-	}
     public void playSE(int i){
     	try {
 			soundEffects.setFile(i);
-	
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("ERROR HERE");
 		}
     	soundEffects.play(false);
-    }
+    } // End of playSE
+	
     public void stopSE() {
     	soundEffects.stop("SE");
-    	
     }
-}
+} // End ofclass
