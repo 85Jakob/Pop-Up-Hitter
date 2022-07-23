@@ -7,14 +7,13 @@ public class KeyHandler implements KeyListener{
 	
 	public boolean upPressed, downPressed, leftPressed, rightPressed;
 	public static boolean enterPressed = false;
-	 /** Maximum elapsed time to consider key held down. */
-    private static final long THRESHOLD = 90L;
-
-    /** Timestamp of last invocation of method 'keyReleased'. */
-    private long lastWhen;
-
+	/** Maximum elapsed time to consider key held down. */
+	private static final long THRESHOLD = 90L;
 	
+	/** Timestamp of last invocation of method 'keyReleased'. */
+	private long lastWhen;
 	GamePanel gp;
+	
 	public KeyHandler(GamePanel gp) {
     	this.gp = gp;
     }
@@ -71,7 +70,7 @@ public class KeyHandler implements KeyListener{
         }
 		
 		lastWhen = when;
-	}
+	} // End of playstate
 	
 	private void titleState(int code) {
     	if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP){
@@ -105,7 +104,7 @@ public class KeyHandler implements KeyListener{
         else if(code == KeyEvent.VK_ESCAPE){
         	gp.running = false;
         }
-	}
+	} // end of titlestate
 	
 	private void gameOverState(int code) {
 		if(code == KeyEvent.VK_ENTER) {
@@ -114,7 +113,7 @@ public class KeyHandler implements KeyListener{
 		else if(code == KeyEvent.VK_ESCAPE){
         	gp.running = false;
         }
-	}
+	} // end of gameOverState
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -137,4 +136,4 @@ public class KeyHandler implements KeyListener{
 		
 	}
 
-}
+} // end of class
