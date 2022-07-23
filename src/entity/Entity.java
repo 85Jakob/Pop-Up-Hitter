@@ -15,7 +15,6 @@ import main.UtilityTool;
 public class Entity {
 	
 	GamePanel gp;
-	
 	public int x, y;
 	public int xMultiplier;
 	public int yMultiplier;
@@ -27,19 +26,19 @@ public class Entity {
 	public boolean attacking = false;
 	public boolean collision = false;
 	public int spriteCounter = 0;
-    public int spriteNum = 1;
+   	public int spriteNum = 1;
     public String direction = "down";
     public float speed;
     public int actionLockCounter;
     public boolean hit;
     Random r = new Random();
     double randomfloat;
-    
-    public Entity(GamePanel gp) {
+
+	public Entity(GamePanel gp) {
     	this.gp = gp;
-    }
-    public void update() {
+    } //End of Constructor
     	
+	public void update() {
     	setAction();
     	collisionOn = false;
     	gp.cChecker.checkPlayer(this);
@@ -50,18 +49,15 @@ public class Entity {
 					y -= speed;
 					gp.fallTime = 0;
 				}
-		    break;
+		    	break;
 		    case "down":
 		    	if (gp.fallTime > randomfloat) {
 		    		y += speed;
 		      		gp.fallTime = 0;
 		      	}
 		    	break;
-	    }
-        
-    	
- 
-    }
+	    } // End of switch
+    } // End of update
 	
 	public BufferedImage setUp(String imagePath, int width, int height) {
 	   	
@@ -75,23 +71,23 @@ public class Entity {
 	   	}catch(IOException e) {
 	   		e.printStackTrace();
 	   	}
-	   	return image;
 	   	
-	}
+		return image;
+	} // End of setUp
+	
 	public void setAction() {}
 	public void objReaction() {}
-	
-	
+
 	public void draw(Graphics2D g2) {
 		
 		BufferedImage image = null;
-		
 		image = idol;
-		
 		g2.drawImage(image, x, y, width, height, null);
+		
+		// Uncomment to view hitbox
 		//g2.setColor(Color.RED);
 		//g2.drawRect( x + solidArea.x, y + solidArea.y, solidArea.width, solidArea.height);
 		 
-	}
+	} // End of draw
 	
 }
