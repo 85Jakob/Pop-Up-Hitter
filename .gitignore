@@ -1,0 +1,10 @@
+#ignore everything
+*
+
+#unignore
+!*.wav
+!*.png
+!*.ttf
+!*.class
+!*.java
+!*.gitignore
