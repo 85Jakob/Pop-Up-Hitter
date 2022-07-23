@@ -13,17 +13,17 @@ public class Player extends Entity{
 	KeyHandler keyH;
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
-		
 		super(gp);
 		this.keyH = keyH;
 		setDefaultValues();
 		getPlayerImage();
-	}
+	} // End of constructor
+	
 	public void getPlayerImage() {
 		idol = setUp("/player/swing1.png", width, height);
 		swing2 = setUp("/player/swing2.png", width, height);
 		swing3 = setUp("/player/swing3.png", width, height);
-	}
+	} //End of getPlayerImage
 	
 	public void setDefaultValues() {
 		xMultiplier = 1;
@@ -40,20 +40,23 @@ public class Player extends Entity{
         solidArea.height = gp.tileSize/3 - 20;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-	}
+	} // End of setDefaultValues
 	
 	public void update() {
 		if(attacking == true) {
 			attacking();
 		}
+		// Player can move when not swinging bat
 		else if(attacking == false) {
 			if(keyH.leftPressed == true) {
+				// lower bounds
 				if(xMultiplier > 0) {
 					xMultiplier -= 1;
 				}
 				keyH.leftPressed = false;
 			}
 			else if(keyH.rightPressed == true) {
+				// upper bounds
 				if(xMultiplier < 4) {	
 					xMultiplier += 1;
 				}
@@ -65,21 +68,19 @@ public class Player extends Entity{
 				gp.playTime = 0;
 				attacking = true;
 			}
-			
-    	}
+    	} // end of else if
 		collisionOn = false;
 		int objIndex = gp.cChecker.checkEntity(this, gp.obj);
 		interactObj(objIndex);
-	}
+		
+	} // End of update
 	
 	public void interactObj(int index) {
-		if(index != 999) {
-			
-		}
-	}
+		if(index != 999) {}
+	} // End of interactObj
 	
 	public void attacking() {
-		
+		// swing animation set to gameplay clock;
     	if(gp.playTime <= 5) {
     		spriteNum = 1;
     	}
@@ -91,24 +92,20 @@ public class Player extends Entity{
     	}
     	int objIndex = gp.cChecker.checkEntity(this, gp.obj);
 		hitObject(objIndex);
-		
-		
-	}
+	} // End of Attacking
 
 	public void hitObject(int index) {
-    	
     	if(index != 999) { 
     		if(gp.obj[index].hit == false) {
     			gp.hitCounter++;
     			gp.playSE(0);
     			gp.obj[index].hit = true;
     			gp.obj[index].objReaction();
-    		}
-		}
-    }
+    		} // End of If
+		} // End of if
+    } // End of hitObject
 	
 	public void draw(Graphics2D g2) {
-		
 		BufferedImage image = null;
 		if(attacking == true) {
     		if(spriteNum == 1) {image = swing2;}
@@ -119,11 +116,8 @@ public class Player extends Entity{
 			image = idol;
 		}
 		g2.drawImage(image, x, y, width, height, null);
+		// Uncomment to view hitbox
 		//g2.setColor(Color.RED);
-		//g2.drawRect( x + solidArea.x, y + solidArea.y, solidArea.width, solidArea.height);
-		 
-	}
-	// draw game elements
-			
-
+		//g2.drawRect( x + solidArea.x, y + solidArea.y, solidArea.width, solidArea.height);	 
+	} // End of draw
 }
