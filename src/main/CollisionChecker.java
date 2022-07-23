@@ -14,7 +14,6 @@ public class CollisionChecker {
 		
 		int index = 999;
 		for(int i = 0; i < target.length; i++){
-			 
 			if(target[i] != null) {
 				// Get entity's solid area position
 				entity.solidArea.y = entity.y + entity.solidArea.y;
@@ -51,11 +50,9 @@ public class CollisionChecker {
 			}
 		}
 		return index;
-	}
+	} // End of checkEntity
 	
-public void checkPlayer(Entity entity) {
-		
-		
+	public void checkPlayer(Entity entity) {
 		// Get entity's solid area position
 		entity.solidArea.y = entity.y + entity.solidArea.y;
 		entity.solidArea.x = entity.x + entity.solidArea.x;
@@ -86,9 +83,5 @@ public void checkPlayer(Entity entity) {
 		gp.player.solidArea.x = gp.player.solidAreaDefaultX;
 		gp.player.solidArea.y = gp.player.solidAreaDefaultY;
 	
-	}
-	
-	
-	
-
-}
+	} // End of checkplayer
+} // End of class
