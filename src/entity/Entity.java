@@ -89,5 +89,4 @@ public class Entity {
 		//g2.drawRect( x + solidArea.x, y + solidArea.y, solidArea.width, solidArea.height);
 		 
 	} // End of draw
-	
-}
+} // End of class
