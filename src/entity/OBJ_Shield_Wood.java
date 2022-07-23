@@ -35,4 +35,4 @@ public class OBJ_Shield_Wood extends Entity{
 	public void objReaction() {
 		direction = "up";
 	} // End of objReaction
-}
+} // End of class
